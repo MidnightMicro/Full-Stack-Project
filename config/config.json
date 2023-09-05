@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "kcokcdyl",
-    "password": "v9dR8_iQ6UwUZuQTaELsNl-x_QzGO95m",
-    "database": "kcokcdyl",
-    "host": "hansken.db.elephantsql.com",
+    "username": "hfutwidf",
+    "password": "G4I2emecc4yyEE3holi2xKTZjfAQkJy8",
+    "database": "hfutwidf",
+    "host": "batyr.db.elephantsql.com",
     "dialect": "postgres"
   },
   "test": {
@@ -21,3 +21,4 @@
     "dialect": "postgres"
   }
 }
+

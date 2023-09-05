@@ -1,37 +1,35 @@
 const express = require('express');
 // const Sequelize = require("sequelize");
 const app = express();
+const db = require('./models')
 
-
-
-const { User } = require('./models');
 
 app.use(express.json());
 
-app.get('/users', (req, res) => {
+app.get('/meals', (req, res) => {
     // SELECT * FROM "Users";
-    User.findAll({ attributes: ['id', 'firstName', 'lastName', 'email'] }).then((users) => {
-      console.log(users);
+    Meals.findAll({ attributes: ['id', 'Protein', 'Vegetables', 'Carbs'] }).then((meals) => {
+      console.log(meals);
   
-      res.json(users);
+      res.json(meals);
     })
   })
 
 app.post('/users', (req, res) => {
     console.log(req.body);
 
-    const { firstName, lastName, email } = req.body;
+    const { Protein, Vegetables, Carbs } = req.body;
   
     if (!email) {
       return res.json({ err: "please provide email" });
     }
   
     User.create({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-    }).then((new_user) => {
-      res.json({ id: new_user.id })
+      Protein: Protein,
+      Vegetables: Vegetables,
+      Carbs: Carbs,
+    }).then((new_meal) => {
+      res.json({ id: new_meal.id })
     }).catch((err) => {
       console.log(err)
       res.json({ err: 'there was an error' })
