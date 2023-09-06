@@ -36,14 +36,6 @@ app.put('/meals/:id', (req,res) => {
   })
 })
 
-// app.get('/meals', (req, res) => {
-//     // SELECT * FROM "Users";
-//     Meals.findAll({ attributes: ['id', 'Protein', 'Vegetables', 'Carbs'] }).then((meals) => {
-//       console.log(meals);
-  
-//       res.json(meals);
-//     })
-//   })
 
 app.post('/meals', (req, res) => {
     console.log(req.body);
@@ -60,9 +52,18 @@ app.post('/meals', (req, res) => {
       console.log(err)
       res.json({ err: 'there was an error' })
     })
-  
   })
   
+  app.delete('/meals/:id', (req, res) => {
+    Meals.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then((results) => {
+      console.log(results)
+      res.json({})
+    })
+  })
 app.listen(3000, () => {
     console.log("App started in port 3000")
   })
