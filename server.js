@@ -1,5 +1,5 @@
 const express = require('express');
-const Sequelize = require("sequelize");
+const { Op } = require("sequelize");
 const app = express();
 const { Meals } = require('./models')
 
@@ -40,21 +40,23 @@ app.put('/meals/:id', (req,res) => {
 app.post('/meals', (req, res) => {
     console.log(req.body);
 
-    const { Protein, Vegetables, Carbs } = req.body;
+    const { Protein, Vegetables, Carbs,userId } = req.body;
   
     Meals.create({
       Protein: Protein,
       Vegetables: Vegetables,
       Carbs: Carbs,
+      userId: userId
     }).then((new_meals) => {
       res.json({ id: new_meals.id })
     }).catch((err) => {
       console.log(err)
       res.json({ err: 'there was an error' })
     })
-  })
-  
-  app.delete('/meals/:id', (req, res) => {
+ })
+
+
+app.delete('/meals/:id', (req, res) => {
     Meals.destroy({
       where: {
         id: req.params.id
@@ -64,6 +66,35 @@ app.post('/meals', (req, res) => {
       res.json({})
     })
   })
+
+app.get("/meals/search", (req, res) => {
+  console.log(req.params);
+  console.log(req.query);
+  const { search } = req.query;
+  console.log(search);
+
+  Meals.findAll({
+    attributes: ['id', 'Protein', 'Vegetables', 'Carbs'],
+    where: {
+      [Op.or]: [
+        {
+          Protein: {
+            [Op.iLike]: "%" + search + "%"
+          }
+        },
+        {
+          Vegetables: {
+            [Op.iLike]: "%" + search + "%"
+          }
+        }
+      ]
+    }
+  }).then((meals) => {
+    res.json(meals)
+  })
+})
+
+
 app.listen(3000, () => {
     console.log("App started in port 3000")
   })
