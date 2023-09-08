@@ -1,13 +1,32 @@
 const express = require('express');
 const { Op } = require("sequelize");
 const app = express();
-const { Meals } = require('./models')
-
+const { Meals } = require('./models');
+// const session = require('express-session');
+const cookieParser = require('cookie-parser')
 
 app.use(express.json());
+app.use(cookieParser())
+// app.use(session())
+
+const bodyParser = require('body-parser');
+
+// Middleware
+app.use(bodyParser.json());
+
+app.get("/", (req,res) => {
+  res.sendFile("index.html", { root: __dirname});
+})
+// Process the form data
+app.post('/api', (req, res) => {
+  console.log(req.body);
+  res.json({
+    message:"I received all the data"
+});
+})
 
 app.get('/meals', (req, res) => {
-  // SELECT * FROM "Users";
+  // SELECT * FROM "Meals";
   Meals.findAll({
     attributes: ['id', 'Protein', 'Vegetables', 'Carbs']
   }).then((meals) => {
@@ -35,6 +54,7 @@ app.put('/meals/:id', (req,res) => {
     res.json({ err: "there was an error in your request" });
   })
 })
+
 
 
 app.post('/meals', (req, res) => {

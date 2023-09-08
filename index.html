@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com">
+    <link rel="shortcut icon" href="#">
+
+    <title>Meal Ideas</title>
+</head>
+<body>
+    <h1>Get your meal ideas here!</h1>
+        <form id="foodSearch">
+            <label>Protein:</label> <input type="text" class="Protein" id="Protein"/></label>
+            <label>Carbs<input type="text" class="Carbs"/></label>
+            <button>Send Data</button>
+          </form>
+          <button>show data</button>
+          <div id="meal_data">
+            <!-- <section id="sectionCard" class="container-fluid" style="display: none"> -->
+                <div class="row">
+                  <img id="mealImage" />
+                  <div class="col">
+                    <h1 id="mealName"></h1>
+                    <p id="mealInfo" class="text-wrap">hello</p>
+                    <p id="Details" class= "details">Just fill this out with more details!</p>
+                    <br>
+                </div>
+        </div>
+<script>
+    var button = document.querySelector("button");
+    var myProtein = document.querySelector(".Protein");
+    var myCarbs = document.querySelector(".Carbs");
+    
+button.addEventListener("click", () => {
+    event.preventDefault();
+    let obj = {
+    Protein:myProtein.value,
+    Carbs:myCarbs.value,
+};
+console.log(obj)
+fetch("/meals", {
+    method:"POST",
+    headers: {
+        "Content-type":"application/json"
+    },
+    body:JSON.stringify(obj)
+}).then((response)=>response.json()).
+then(response=> {
+console.log(obj)
+mealName.innerHTML= `
+<table>
+  <tr>
+    <th>${obj.Protein}</th>
+  </tr>
+  <tr>
+    <td>${obj.Carbs}</td>
+  </tr>
+</table> 
+<h1>${obj.Protein}</h1>`
+});
+})
+
+        </script>
+</body>
+</html>
