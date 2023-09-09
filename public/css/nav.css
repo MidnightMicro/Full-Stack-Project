@@ -1,0 +1,40 @@
+nav {
+  background-color: #007bff;
+  color: white;
+
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  align-items: center;
+}
+nav div a {
+  margin-right: 10px;
+}
+
+.click {
+  background-color: white;
+  text-decoration: none;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 3px;
+  font-size: 20px;
+}
+.click:hover {
+  font-size: 19px;
+  transition: 0.3s;
+}
+
+.clickProfileIcon {
+  background-color: white;
+  text-decoration: none;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 3px;
+  font-size: 20px;
+}
