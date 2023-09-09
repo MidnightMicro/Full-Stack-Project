@@ -1,5 +1,8 @@
 'use strict';
 
+/* `const fs = require('fs');` is importing the built-in Node.js module `fs`, which stands for "file
+system". This module provides functions for interacting with the file system, such as reading and
+writing files. */
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
