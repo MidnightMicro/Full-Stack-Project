@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Meals.belongsTo(models.Users, {
         foreignKey:'userId',
         onDelete: 'CASCADE'
-      })
+      });
     }
   }
   Meals.init({
