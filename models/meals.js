@@ -19,9 +19,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Meals.init({
     Protein: DataTypes.STRING,
-    Vegetables: DataTypes.STRING,
-    Carbs: DataTypes.STRING
-  }, {
+    userId: DataTypes.INTEGER
+  }, 
+  {
     sequelize,
     modelName: 'Meals',
   });

@@ -20,10 +20,11 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-  }, {
+    email: DataTypes.STRING
+  }, 
+  {
     sequelize,
     modelName: 'Users',
   });
   return Users;
 };
-

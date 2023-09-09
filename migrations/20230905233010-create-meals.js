@@ -12,19 +12,8 @@ module.exports = {
       Protein: {
         type: Sequelize.STRING
       },
-      Vegetables: {
-        type: Sequelize.STRING
-      },
-      Carbs: {
-        type: Sequelize.STRING
-      },
       userId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
