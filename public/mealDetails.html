@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealDetails</title>
+</head>
+<body>
+    <h1>Meals Here</h1>
+
+<script>
+    let button = document.querySelector("button")
+    let idMeal = sessionStorage.getItem("idMeal");
+              // ul.innerHTML = data.array.forEach(element => {
+                
+    
+//     method:"POST",
+//     headers: {
+//         "Content-type":"application/json"
+//     },
+//     body:JSON.stringify(obj)
+// }).then((r)=>r.json()).
+// then(response=> {
+// console.log(response);
+// mealData.innerHTML= `
+// <h1>${response.Protein}</h1>`
+// });
+
+//idMeal/parameter is placeholder
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`)
+    .then(response => response.json())
+    .then(mealData => {
+        let meal = mealData.meals[0]
+        let HTMLfragment = `<section id=${meal.idMeal} class="container-fluid">
+                                <div class="row">
+                                    <img class="mealImage" src= ${meal.strMealThumb} />
+                                    <div class="col">
+                                    <h1 id="mealName">${meal.strMeal}</h1>
+                                      <br>
+                                      <button type="button">Add me to your favorites!</button>
+                                      <p>${meal.strInstructions}</p>
+                                    </div>
+                                </div>
+                            </section>`
+//add button to add meal.id - function to add to favorites using CRUD? - change column in Beekeeper to idMeals
+        document.body.innerHTML = HTMLfragment
+        console.log(meal);
+        let button = document.querySelector("button")
+        let idMeal = sessionStorage.getItem("idMeal");
+         button.addEventListener("click", async (e)=> {
+        event.preventDefault();
+        fetch("/meals", {
+            method:"POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({Protein: `${meal.strMeal}`})
+            })
+        .then(r => r.json() )
+        .then(response => 
+        console.log(response)
+        );
+        
+    })
+});
+</script>
+
+</body>
+</html>

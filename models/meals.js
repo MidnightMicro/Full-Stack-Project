@@ -18,8 +18,6 @@ module.exports = (sequelize, DataTypes) => {
   Meals.init(
     {
       Protein: DataTypes.STRING,
-      Vegetables: DataTypes.STRING,
-      Carbs: DataTypes.STRING,
     },
     {
       sequelize,

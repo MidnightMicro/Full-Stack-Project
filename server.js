@@ -1,112 +1,139 @@
-const express = require("express");
+const express = require('express');
 const { Op } = require("sequelize");
 const app = express();
-const { Meals } = require("./models");
-const userRoutes = require("./routes/userRoutes");
-const mealRoutes = require("./routes/mealsRoutes");
-const session = require("express-session");
-const SequelizeStore = require("express-session-sequelize")(session.Store);
-const { Users } = require("./models");
+const bcrypt = require("bcrypt");
+const path = require ('path');
+const { Users } = require('./models');
+const { Meals } = require('./models');
+const session = require('express-session');
+const cookieParser = require('cookie-parser')
 
+app.use(express.static(__dirname + '/public'));
 app.use(express.json());
+app.use(cookieParser())
+// app.use(session())
 
-// Configure express-session
-app.use(
-  session({
-    secret: "superSecret",
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({
-      db: Users.sequelize,
-    }),
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // Session duration (e.g., 24 hours)
-    },
-  })
-);
-app.use(express.urlencoded({ extended: true })); // Add this line to parse form data
-// Frontend Setup
-app.set("view engine", "ejs");
-app.set("views", __dirname + "/views");
+const bodyParser = require('body-parser');
+const saltRounds = 10;
 
-app.use(express.static(__dirname + "/public"));
 
-// Make first link here
-app.get("/", (req, res) => {
-  res.render("register", { error: null });
-});
-app.post("/register", userRoutes.register);
+// Middleware
+app.use(bodyParser.json());
 
-app.get("/login", (req, res) => {
-  res.render("login", { error: null });
-});
-app.get("/profile", userRoutes.profile);
 
-app.post("/login", userRoutes.login);
 
-app.get("/logout", userRoutes.logout);
-
-app.get("/deleteProfile", userRoutes.deleteProfile);
-
-app.get("/meals", mealRoutes.getMeals);
-
-app.put("/meals/:id", (req, res) => {
-  const { Protein, Vegetables, Carbs } = req.body;
-  const { id } = req.params;
-
-  Meals.update(
-    { Protein: Protein, Vegetables: Vegetables, Carbs: Carbs },
-    {
-      where: {
-        id: id,
-      },
-    }
-  )
-    .then((result) => {
-      console.log(result);
-
-      res.json({});
+app.get('/users' , async (req,res) =>{
+    // SELECT * FROM "Users";
+    Users.findAll({
+    }).then((users) => {
+      console.log(users);
+      res.json(users);
     })
-    .catch((err) => {
-      console.log(err);
+  })
+ async function hashPassword(plaintextPassword) {
+  const hash = await bcrypt.hash(plaintextPassword, 10);
+ }
+  // Store hash in the database
 
-      res.json({ err: "there was an error in your request" });
-    });
-});
-
-app.get("/editProfile", userRoutes.editProfile);
-app.post("/editProfile", userRoutes.editPostProfile);
-
-app.post("/meals", (req, res) => {
+app.post('/users', async (req,res) => {
   console.log(req.body);
 
-  const { Protein, Vegetables, Carbs, userId } = req.body;
+  const { firstName, lastName, plaintextPassword} = req.body;
+  bcrypt.hash(plaintextPassword, saltRounds, function(err, hash) {
 
-  Meals.create({
-    Protein: Protein,
-    Vegetables: Vegetables,
-    Carbs: Carbs,
-    userId: userId,
+
+  Users.create({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: hashPassword,
+  }).then((new_user) => {
+    res.json({new_user})
+  }).catch((err) => {
+    console.log(err)
+    res.json({ err: 'there was an error' })
   })
-    .then((new_meals) => {
-      res.json({ id: new_meals.id });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.json({ err: "there was an error" });
-    });
+});
 });
 
-app.delete("/meals/:id", (req, res) => {
-  Meals.destroy({
+
+app.delete('/users/:id', (req, res) => {
+  Users.destroy({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   }).then((results) => {
-    console.log(results);
-    res.json({});
-  });
+    console.log(results)
+    res.json({})
+  })
+})
+
+
+
+  // const newUser = {
+  //   firstName: req.body.firstName,
+  //   lastName: req.body.lastName,
+  //   age: req.body.age,
+  //   email: req.body.email,
+  //   password: req.body.password, 
+  //   }
+  //   User.create(newUser);
+  //   res.json(user)
+  // });
+
+
+
+// add  body to favorites
+
+app.post('/meals', (req, res) => {
+  const { Protein } = req.body;
+  Meals.create({ Protein: Protein}).then((newMeal) => {
+    res.json(newMeal)
+  })
 });
+
+app.get('/meals', (req, res) => {
+  // SELECT * FROM "Meals";
+  Meals.findAll({
+    attributes: ['id', 'Protein']
+  }).then((meals) => {
+    console.log(meals);
+
+    res.json(meals);
+  })
+})
+
+app.put('/meals/:id', (req,res) => {
+  const { Protein} = req.body;
+  const { id } = req.params;
+
+  Meals.update({ Protein: Protein,}, {
+    where: {
+      id: id
+    }
+  }).then((result) => {
+    console.log(result);
+
+    res.json({})
+  }).catch(err => {
+    console.log(err)
+
+    res.json({ err: "there was an error in your request" });
+  })
+})
+
+
+
+app.delete('/meals/:id', (req, res) => {
+    Meals.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then((results) => {
+      console.log(results)
+      res.json({})
+    })
+  })
 
 app.get("/meals/search", (req, res) => {
   console.log(req.params);
@@ -115,26 +142,22 @@ app.get("/meals/search", (req, res) => {
   console.log(search);
 
   Meals.findAll({
-    attributes: ["id", "Protein", "Vegetables", "Carbs"],
+    attributes: ['id', 'Protein'],
     where: {
       [Op.or]: [
         {
           Protein: {
-            [Op.iLike]: "%" + search + "%",
-          },
+            [Op.iLike]: "%" + search + "%"
+          }
         },
-        {
-          Vegetables: {
-            [Op.iLike]: "%" + search + "%",
-          },
-        },
-      ],
-    },
+      ]
+    }
   }).then((meals) => {
-    res.json(meals);
-  });
-});
+    res.json(meals)
+  })
+})
 
-app.listen(3001, () => {
-  console.log("App started in port 3001");
-});
+
+app.listen(3000, () => {
+    console.log("App started in port 3000")
+  })
