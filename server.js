@@ -11,18 +11,18 @@ const cookieParser = require('cookie-parser')
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(cookieParser())
-// app.use(session())
+// app.use(session()) //and also middleware
 
 const bodyParser = require('body-parser');
 const saltRounds = 10;
 
 
 // Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // This allows for data to be placed onto the body (req.body inside of routes)
 
 
 
-app.get('/users' , async (req,res) =>{
+app.get('/users', async (req,res) =>{
     // SELECT * FROM "Users";
     Users.findAll({
     }).then((users) => {
@@ -38,22 +38,23 @@ app.get('/users' , async (req,res) =>{
 app.post('/users', async (req,res) => {
   console.log(req.body);
 
+
   const { firstName, lastName, plaintextPassword} = req.body;
+
   bcrypt.hash(plaintextPassword, saltRounds, function(err, hash) {
 
-
-  Users.create({
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    password: hashPassword,
-  }).then((new_user) => {
-    res.json({new_user})
-  }).catch((err) => {
-    console.log(err)
-    res.json({ err: 'there was an error' })
-  })
-});
+    Users.create({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: hashPassword, 
+    }).then((new_user) => {
+      res.json({new_user})
+    }).catch((err) => {
+      console.log(err)
+      res.json({ err: 'there was an error' })
+    })
+  });
 });
 
 

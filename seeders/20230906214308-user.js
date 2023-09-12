@@ -16,12 +16,16 @@ module.exports = {
       {
         firstName: 'Jerry',
         lastName: 'Mouse',
+        email: 'jerry@gmail.com',
+        password: '1234',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         firstName: 'Tom',
         lastName: 'Cat',
+        email: 'tom@gmail.com',
+        password: '1234',
         createdAt: new Date(),
         updatedAt: new Date()
       }
