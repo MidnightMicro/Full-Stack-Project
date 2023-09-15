@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com">
+  <link rel="shortcut icon" href="#">
+  <title>register Page</title>
+</head>
+
+<body>
+  <form id="register">
+    <div>
+      <label>First Name:</label>
+      <input type="text" name="firstName">
+    </div>
+    <div>
+      <label>Last Name:</label>
+      <input type="text" name="lastName">
+    </div>
+    <div>
+      <label>Email:</label>
+      <textarea type="text" name="email"></textarea>
+    </div>
+    <div>
+      <label>Password:</label>
+      <input type="password" name="password">
+    </div>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    document.getElementById('register').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const firstName = event.target.firstName.value;
+      const lastName = event.target.lastName.value;
+      const email = event.target.email.value;
+      const password = event.target.password.value;
+      const body = {        
+        firstName: firstName,
+        lastName: lastName, 
+        email: email,
+        password: password,
+      }
+
+      fetch('/register', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }).then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        })
+    })
+  </script>
+
+</body>
+
+</html>
+</body>
+</html>

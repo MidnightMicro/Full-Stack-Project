@@ -5,11 +5,6 @@ let meal_data = document.querySelector("#meal_data")
 
 form.addEventListener("submit", async (event) => {
 event.preventDefault();
-// let obj = {
-// Protein:myProtein.value,
-// Carbs:myCarbs.value,
-// };
-// const mealData = myProtein;
 console.log(myProtein)
 
 const mealDbResponse = await fetch (`https://www.themealdb.com/api/json/v1/1/filter.php?i=${myProtein}`);
@@ -33,7 +28,7 @@ if (FoodData.meals == null || FoodData.meals.length <= 0) {
     else if (FoodData.meals.length > 0) {
     let HTMLfragment = "";
     FoodData.meals.forEach((meal) => {
-        HTMLfragment += `<section onclick="openTab(${meal.idMeal})" id=${meal.idMeal} class="container-fluid">
+        HTMLfragment += `<section onclick="openTab(${meal.idMeal})" id=${meal.idMeal} class="container">
                             <div class="row">
                                 <img class="mealImage" src= ${meal.strMealThumb} />
                                 <div class="col">
