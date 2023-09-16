@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="register">
+        <div>
+          <label>First Name:</label><input type="text" name="firstName">
+        </div>
+        <div>
+          <label>Last Name:</label><input type="text" name="lastName">
+        </div>
+        <div>
+          <label>Email:</label><input type="text" name="email"></input>
+        </div>
+        <div>
+          <label>Password:</label><input type="password" name="password">
+        </div>
+        <br> <input type="submit" value="Submit"> 
+      </form>
+<script>
+    document.getElementById('register').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const firstName = event.target.firstName.value;
+      const lastName = event.target.lastName.value;
+      const email = event.target.email.value;
+      const password = event.target.password.value;
+      const body = {        
+        firstName: firstName,
+        lastName: lastName, 
+        email: email,
+        password: password,
+      }
+
+      fetch('/user', {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }).then((res) => res.json())
+      .then((data) => {
+      if (data.success) {
+        window.location.href = "/home.html";
+      } else {
+        alert("User Updated");
+        window.location.href = "/home.html";
+      }
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+    
+    })
+</script>
+</body>
+</html>

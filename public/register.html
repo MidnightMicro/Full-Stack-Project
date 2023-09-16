@@ -7,29 +7,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com">
   <link rel="shortcut icon" href="#">
+  <link rel="stylesheet" type="text/css" href="styles.css" />
   <title>register Page</title>
 </head>
 
 <body>
   <form id="register">
     <div>
-      <label>First Name:</label>
-      <input type="text" name="firstName">
+      <label>First Name:</label><input type="text" name="firstName">
     </div>
     <div>
-      <label>Last Name:</label>
-      <input type="text" name="lastName">
+      <label>Last Name:</label><input type="text" name="lastName">
     </div>
     <div>
-      <label>Email:</label>
-      <textarea type="text" name="email"></textarea>
+      <label>Email:</label><input type="text" name="email"></input>
     </div>
     <div>
-      <label>Password:</label>
-      <input type="password" name="password">
+      <label>Password:</label><input type="password" name="password">
     </div>
-    <br>
-    <input type="submit" value="Submit">
+    <br> <input type="submit" value="Submit"> 
   </form>
 
   <script>
@@ -53,10 +49,19 @@
         },
         body: JSON.stringify(body)
       }).then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        })
+      .then((data) => {
+      if (data.success) {
+        window.location.href = "/home.html";
+      } else {
+        alert("User Created");
+        window.location.href = "/home.html";
+      }
     })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+    })
+
   </script>
 
 </body>

@@ -1,7 +1,7 @@
 let form = document.getElementById("foodSearch");
 let myProtein = document.getElementById("Protein").value;
 // var myCarbs = document.querySelector(".Carbs").value;
-let meal_data = document.querySelector("#meal_data")
+let meal_data = document.querySelector("#meal_data");
 
 form.addEventListener("submit", async (event) => {
 event.preventDefault();
@@ -49,6 +49,8 @@ console.log(idMeal);
 sessionStorage.setItem("idMeal", idMeal)
 window.open("/mealDetails.html", '_blank')
 }
+
+
 
 
 // add id to local storage, create new tab 
