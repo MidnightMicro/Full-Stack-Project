@@ -9,6 +9,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const SessionStore = require('express-session-sequelize')(session.Store);
 
+
 const myStore = new SessionStore({
   db : sequelize,
 })
@@ -28,6 +29,10 @@ app.use(session({
     sameSite: 'strict',
   }
 }));
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/login.html');
+});
 
 //Creating new user
 app.post('/register', (req, res) => {
@@ -96,33 +101,25 @@ app.delete('/users/:id', (req, res) => {
 
 app.put('/user', (req, res) => {
   if (!req.session.user) {
-    return res.json({ success: false, err: 'please login' })
+    return res.json({ success: false, err: 'please login first!' })
   }
-
   const { firstName, lastName, email, password} = req.body;
-
   const updateFields = {};
-
   if (firstName) {
     updateFields.firstName = firstName;
   }
-
   if (lastName) {
     updateFields.lastName = lastName;
   }
-
   if (password) {
     updateFields.password = bcrypt.hashSync(password, saltRounds);
   }
-
   if (email) {
     updateFields.email = email;
   }
-
   if (Object.keys(updateFields).length === 0) {
     return res.json({ success: false, err: 'no fields to update' });
   }
-
   Users.update(updateFields, {
     where: {
       id: req.session.user.id
