@@ -9,6 +9,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const SessionStore = require('express-session-sequelize')(session.Store);
 
+
 const myStore = new SessionStore({
   db : sequelize,
 })
@@ -65,6 +66,7 @@ app.post('/login', (req, res) => {
     where: {
       email: email
     }
+
   }).then((user) => {
     if (!user) {
       return res.json({ err: "no user found" });
@@ -73,6 +75,7 @@ app.post('/login', (req, res) => {
     let comparison = bcrypt.compareSync(password, user.password);
     if (comparison == true) {
       res.json({ success: true })
+
     } else {
       res.json({ success: false })
     }
@@ -124,7 +127,6 @@ app.put('/user', (req, res) => {
     res.json({ success: true })
   })
 })
-
 
 
 //   // const newUser = {
