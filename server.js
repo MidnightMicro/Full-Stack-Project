@@ -41,7 +41,7 @@ app.post('/register', (req, res) => {
   if (!email || !password) {
     return res.json({ err: "please provide email and password" }),
     window.open("register.html", '_blank')
-}
+  }
 
   let hashedPassword = bcrypt.hashSync(password, saltRounds);
 
@@ -50,7 +50,7 @@ app.post('/register', (req, res) => {
     lastName, 
     email, 
     password: hashedPassword 
-  }).then(new_user => {
+  }).then((new_user) => {
     req.session.user = new_user;
     res.json(new_user)
     console.log(new_user)
@@ -93,8 +93,6 @@ app.delete('/users/:id', (req, res) => {
     res.json({})
   })
 });
-
-
 
 // // Middleware
 // app.use(bodyParser.json()); // This allows for data to be placed onto the body (req.body inside of routes)

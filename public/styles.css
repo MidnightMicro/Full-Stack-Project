@@ -2,25 +2,11 @@ body {
     background-color: rgb(3, 96, 128);
   }
   
-  #login , #register{
+  .login {
     color: rgb(255, 254, 251);
     text-align: center;
     align-items: center;
     justify-content: center;
-    order: none;
-    margin-bottom: 15px;
-    padding: 20px;
-    font-size: 16px;
-    border-radius: 10px;
-    outline: none;
-    border: 5px solid white;
-    width: 50%;
-    text-align: center;
-    margin: auto;
-    padding: 10px;
-    color: white;
-    font-size: larger;
-
   }
   
   #emailLabel {
@@ -29,6 +15,10 @@ body {
     margin-right: 20px;
   }
 
+  p {
+    font-family: verdana;
+    font-size: 20px;
+  }
   .mealImage {
     width: 400px;
     position: relative;
